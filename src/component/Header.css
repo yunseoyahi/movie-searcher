@@ -1,0 +1,28 @@
+.main-page{
+    text-decoration: none;
+    color: inherit;
+    color: #de0909;
+    display: inline-block;
+    margin: 0;
+    font-size: 2rem;
+    padding-left: 10%;
+}
+.header-container {
+  background-color: #000000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+.movie-search {
+  text-decoration: none;
+  color: inherit;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}

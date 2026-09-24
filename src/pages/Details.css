@@ -1,0 +1,21 @@
+.movie-detail{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; 
+    gap: 30px;               
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.movie-detail-poster{
+  width: 300px;
+  object-fit: cover;
+}
+
+.movie-description{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 12px;
+}
