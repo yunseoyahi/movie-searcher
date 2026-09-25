@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Search.css";
+import '../api/axios';
+import instance from "../api/axios";
 
 function Search() {
 
@@ -19,14 +21,9 @@ function Search() {
   const searchMovie =async()=>{
         try{
             setLoading(true);
-            const response = await fetch(`https://api.themoviedb.org/3/search/movie?query=${searchTerm}&language=ko-KR`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                    },});
-            const data = await response.json();
-            console.log("무비 서치 데이터 주세요오옹", data);
-            setMovies(data.results);
+            const response = await instance.get(`/search/movie?query=${searchTerm}`);
+            console.log("무비 서치 데이터 주세요오옹", response.data);
+            setMovies(response.data.results);
         }catch(err){
             console.error("에러 발생", err);
             setError(err.message);

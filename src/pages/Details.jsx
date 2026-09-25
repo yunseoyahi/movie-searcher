@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./Details.css"
+import instance from "../api/axios";
 
 function Details() {
 
@@ -10,14 +11,9 @@ function Details() {
   const [error, setError]=useState(null);
   const getMovieDetail =async()=>{
         try{
-            const response = await fetch(`https://api.themoviedb.org/3/movie/${id}?language=ko-KR`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-                    },});
-            const data = await response.json();
-            console.log("데이터를 주세요오옹", data);
-            setMovie(data)
+            const response = await instance.get(`/movie/${id}`);
+            console.log("상세정보 데이터를 주세요오옹", response.data);
+            setMovie(response.data)
         }catch(err){
             console.error("에러 발생", err);
             setError(err.message)
