@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Search.css";
 import '../api/axios';
 import instance from "../api/axios";
+import { searchMovies } from "../api/movies";
 
 function Search() {
 
@@ -21,11 +22,9 @@ function Search() {
   const searchMovie =async()=>{
         try{
             setLoading(true);
-            const response = await instance.get(`/search/movie?query=${searchTerm}`);
-            console.log("무비 서치 데이터 주세요오옹", response.data);
-            setMovies(response.data.results);
+            const data = await searchMovies(searchTerm);
+            setMovies(data.results);
         }catch(err){
-            console.error("에러 발생", err);
             setError(err.message);
         }finally{
           setLoading(false);

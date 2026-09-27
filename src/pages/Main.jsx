@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Main.css";
 import "../api/axios";
 import instance from "../api/axios";
+import { getPopularMovie } from "../api/movies";
 
 function Main() {
   const [loading, setLoading]=useState(true);
@@ -11,11 +12,9 @@ function Main() {
   
   const getMovie =async()=>{
         try{
-            const response = await instance.get('/movie/popular');
-            console.log("데이터를 주세요오옹", response.data);
-            setmovieList(response.data.results);
+            const data = await getPopularMovie();
+            setmovieList(data.results);
         }catch(err){
-            console.error("에러 발생", err);
             setError(err.message);
         }finally{
           setLoading(false);

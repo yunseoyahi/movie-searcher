@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import "./Details.css"
 import instance from "../api/axios";
+import { getMovieDetails } from "../api/movies";
 
 function Details() {
 
@@ -11,12 +12,10 @@ function Details() {
   const [error, setError]=useState(null);
   const getMovieDetail =async()=>{
         try{
-            const response = await instance.get(`/movie/${id}`);
-            console.log("상세정보 데이터를 주세요오옹", response.data);
-            setMovie(response.data)
-        }catch(err){
-            console.error("에러 발생", err);
-            setError(err.message)
+            const data = await getMovieDetails(id);
+            setMovie(data);
+        }catch(err){;
+            setError(err.message);
         }finally{
           setLoading(false);
         }
