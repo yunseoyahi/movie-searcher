@@ -26,3 +26,13 @@
   border-radius: 6px;
   transition: background-color 0.2s;
 }
+.bookmarked-movie{
+  text-decoration: none;
+  color: inherit;
+  color: #96fffa;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}

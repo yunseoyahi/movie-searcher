@@ -1,11 +1,10 @@
-.movie-container{
-    padding: 20px;
-}
-
-.movie-grid{
+.bookmarked-movie-list{
+    text-decoration: none;
+    color: inherit;
     display: grid;
     grid-template-columns: repeat(5, minmax(200px, 1fr));
     gap: 20px;
+    position: relative;
 }
 
 .movie-poster{
@@ -13,12 +12,6 @@
     height: 300px;
     object-fit: cover;
     display: block;
-}
-
-.movie-card{
-    text-decoration: none;
-    color: inherit;
-    position: relative;
 }
 
 .bookmark-btn {

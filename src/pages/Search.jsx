@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Search.css";
-import '../api/axios';
-import instance from "../api/axios";
 import { searchMovies } from "../api/movies";
+import { useBookmark } from "../context/BookmarkContext";
 
 function Search() {
 
@@ -11,6 +10,8 @@ function Search() {
   const [movies, setMovies]=useState(null);
   const [loading, setLoading]=useState(false);
   const [error, setError]=useState(null);
+  const {isBookmarked, toggleBookmark}=useBookmark();
+
   const handleChange=(e)=>{
     setSearchTerm(e.target.value);
   }
@@ -45,7 +46,14 @@ function Search() {
                    const posterUrl= movie.poster_path? 
                     `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 
                     "https://placehold.co/500x750?text=No+Image"; 
+                   const bookmarked=isBookmarked(movie.id);
                   return(<Link to={`/movie/${movie.id}`} key={movie.id} className="movie-card">
+                     <button className="bookmark-btn" 
+                      onClick={(e)=>{
+                        e.preventDefault();
+                        toggleBookmark(movie);
+                      }}>{bookmarked? "❤️" : "🤍"}
+                    </button>
                     <img src={posterUrl} alt={movie.title} className="movie-poster"></img>
                     <h4>제목: {movie.title}</h4>
                     <p>개봉 연도:{movie.release_date}</p>
