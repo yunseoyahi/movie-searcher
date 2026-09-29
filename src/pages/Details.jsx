@@ -1,9 +1,44 @@
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import "./Details.css"
-import instance from "../api/axios";
 import { getMovieDetails } from "../api/movies";
 import { useBookmark } from "../context/BookmarkContext";
+import styled from "styled-components";
+
+const MovieDetailDiv=styled.div`
+    background-color: #C2F2E5;
+    height:100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; 
+    gap: 30px;               
+    margin: 0 auto;
+    padding: 20px;
+`;
+const MovieDetaiPoster=styled.img`
+    width: 300px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+`;
+const MovieDescription=styled.div`
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 12px;
+    position: relative;
+`;
+const HeartBtn=styled.button`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 8px;
+    z-index: 10;
+`;
 
 function Details() {
 
@@ -39,24 +74,24 @@ function Details() {
                     "https://placehold.co/500x750?text=No+Image";
   const bookmarked=isBookmarked(movie.id);
   return (
-    <div className="movie-detail">
-      <img className="movie-detail-poster" 
+    <MovieDetailDiv>
+      <MovieDetaiPoster
            src={posterUrl}/>
-      <div className="movie-description">
+      <MovieDescription>
         <h3>제목: {movie.title}</h3>
-        <button className="bookmark-btn"
+        <HeartBtn
         onClick={(e)=>{
           e.preventDefault();
           toggleBookmark(movie);
         }}>{bookmarked? "❤️" : "🤍"}
-        </button>
+        </HeartBtn>
         <p>개봉일: {movie.release_date}</p>
         <p>평점: {movie.vote_average}</p>
         <p>장르: {movie.genres?.map((genre)=>(
           <span key={genre.id}>{genre.name} </span>))}</p>
         <p>줄거리: {movie.overview}</p>
-      </div>
-    </div>
+      </MovieDescription>
+    </MovieDetailDiv>
   );
 }
 
