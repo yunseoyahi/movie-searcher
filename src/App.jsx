@@ -7,12 +7,14 @@ import Details from "./pages/Details"
 import Search from "./pages/Search"
 import Watchlist from "./pages/Watchlist"
 import Footer from './component/Footer'
+import { BookmarkProvider } from './context/BookmarkContext'
 
 
 function App() {
 
   return (
-    <div>
+    <BookmarkProvider>
+      <div>
       <BrowserRouter>
         <Header/>
         <Routes>
@@ -23,7 +25,8 @@ function App() {
         </Routes>
         <Footer/>
       </BrowserRouter>
-    </div>
+      </div>
+    </BookmarkProvider>
   )
 }
 
