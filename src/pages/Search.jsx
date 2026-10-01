@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { searchMovies } from "../api/movies";
 import { useBookmark } from "../context/BookmarkContext";
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
 
 const MovieSearchDiv=styled.div`
     background-color: #C2F2E5;
@@ -75,30 +76,24 @@ const SearchP=styled.p`
 function Search() {
 
   const [searchTerm, setSearchTerm]=useState('');
-  const [movies, setMovies]=useState(null);
-  const [loading, setLoading]=useState(false);
-  const [error, setError]=useState(null);
   const {isBookmarked, toggleBookmark}=useBookmark();
+
+  const {data, isLoading, isError, error}=useQuery({
+    queryKey: [ "search", "movie", searchTerm],
+    queryFn: ()=>searchMovies(searchTerm),
+  });
+
+  const movies=data?.results;
 
   const handleChange=(e)=>{
     setSearchTerm(e.target.value);
-  }
+  };
+
   const handleSubmit=(e)=>{
     e.preventDefault();
     if(!searchTerm.trim()) return;
     searchMovie();
-  }
-  const searchMovie =async()=>{
-        try{
-            setLoading(true);
-            const data = await searchMovies(searchTerm);
-            setMovies(data.results);
-        }catch(err){
-            setError(err.message);
-        }finally{
-          setLoading(false);
-        }
-    };
+  };
 
   return (
     <MovieSearchDiv>
@@ -107,9 +102,9 @@ function Search() {
         <MovieInput onChange={handleChange} value={searchTerm} type="text"/>
         <SearchBtn type="submit">🔍</SearchBtn>
       </SearchForm>
-      {loading && <div>영화 검색중..</div>}
-      {error && <div>{error}</div>}
-      {!loading && !error && movies && movies.length===0 && <div>검색 결과가 없어요</div>}
+      {isLoading && <div>영화 검색중..</div>}
+      {isError && <div>{error.message}</div>}
+      {!isLoading && !isError && movies && movies.length===0 && <div>검색 결과가 없어요</div>}
       <SearchResultDiv>
         {movies?.map((movie)=>{
                    const posterUrl= movie.poster_path? 

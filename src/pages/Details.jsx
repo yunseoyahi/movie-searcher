@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getMovieDetails } from "../api/movies";
 import { useBookmark } from "../context/BookmarkContext";
 import styled from "styled-components";
+import { useQuery } from "@tanstack/react-query";
 
 const MovieDetailDiv=styled.div`
     background-color: #C2F2E5;
@@ -43,29 +44,17 @@ const HeartBtn=styled.button`
 function Details() {
 
   const {id}=useParams();
-  const[movie, setMovie]=useState(null);
-  const [loading, setLoading]=useState(true);
-  const [error, setError]=useState(null);
   const {isBookmarked, toggleBookmark}=useBookmark();
 
-  const getMovieDetail =async()=>{
-        try{
-            const data = await getMovieDetails(id);
-            setMovie(data);
-        }catch(err){;
-            setError(err.message);
-        }finally{
-          setLoading(false);
-        }
-    };
-  useEffect(()=>{
-          getMovieDetail()
-      },[id])
+  const {data: movie, isLoading, isError, error}=useQuery({
+    queryKey: ["movie", id],
+    queryFn: ()=>getMovieDetails(id),
+  });
   
-  if(loading)
+  if(isLoading)
     return <div>로딩 중입니다...</div>;
-  if(error)
-    return <div>{error}</div>;
+  if(isError)
+    return <div>{error.message}</div>;
   if(!movie)
     return <div>영화 정보를 찾을 수 없습니다.</div>;
 

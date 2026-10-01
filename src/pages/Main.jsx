@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../api/axios";
+import {useQuery} from "@tanstack/react-query";
 import { getPopularMovie } from "../api/movies";
 import { useBookmark } from "../context/BookmarkContext";
 import styled from "styled-components";
@@ -59,29 +59,17 @@ const MovieImg=styled.img`
 `;
 
 function Main() {
-  const [loading, setLoading]=useState(true);
-  const [error, setError]=useState(null);
-  const[movieList, setmovieList]=useState([]);
   const {toggleBookmark, isBookmarked}=useBookmark();
   
-  const getMovie =async()=>{
-        try{
-            const data = await getPopularMovie();
-            setmovieList(data.results);
-        }catch(err){
-            setError(err.message);
-        }finally{
-          setLoading(false);
-        }
-    };
-
-  useEffect(()=>{
-        getMovie()
-    },[])
+  const {data, isLoading, isError, error}=useQuery({
+    queryKey:["movies","popular"],
+    queryFn: getPopularMovie,
+  });
   
-  if(loading) return <div>로딩 중입니다..</div>
-  if(error) return <div>{error}</div>
+  if(isLoading) return <div>로딩 중입니다..</div>
+  if(isError) return <div>{error.message}</div>
   
+  const movieList=data?.results;
 
   return (
     <MainDiv>
